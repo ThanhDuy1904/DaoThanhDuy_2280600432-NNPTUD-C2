@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Sản Phẩm Dashboard - Final Fix</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 20px; background-color: #eee; }
+        .container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        
+        /* Toolbar */
+        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+        input, select, button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
+        button { background: #333; color: white; cursor: pointer; font-weight: bold; border: none; }
+        button:hover { background: #000; }
+
+        /* Bảng dòng đen (xám đậm) - dòng trắng */
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #111; color: white; padding: 15px; text-align: left; }
+        
+        tr:nth-child(odd) { background-color: #ffffff; color: #000; }
+        tr:nth-child(even) { background-color: #1a1a1a; color: #ffffff; } /* Dòng đen */
+        
+        td { padding: 12px; border: 1px solid #333; vertical-align: middle; }
+
+        /* Hình ảnh: Hiển thị toàn bộ */
+        .gallery { display: flex; gap: 8px; flex-wrap: wrap; align-items:center; }
+        .gallery img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain; /* show whole image */
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            display: block;
+        }
+
+        /* Mô tả: Ẩn và hiện khi hover */
+        .desc-cell { position: relative; text-align: center; cursor: help; color: #3498db; text-decoration: underline; font-weight: bold; }
+        .desc-popup { 
+            visibility: hidden; width: 300px; background: #222; color: #fff; padding: 15px;
+            border-radius: 8px; position: absolute; z-index: 999; bottom: 130%; left: 50%;
+            transform: translateX(-50%); box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; transition: 0.3s;
+            font-weight: normal; font-size: 14px; line-height: 1.4;
+        }
+        .desc-cell:hover .desc-popup { visibility: visible; opacity: 1; }
+
+        /* Phân trang */
+        .pagination { margin-top: 20px; display: flex; justify-content: center; gap: 8px; align-items: center; }
+        /* override global button color so numbers are visible on white bg */
+        .pagination button {
+            padding: 8px 12px;
+            min-width: 36px;
+            height: 36px;
+            border: 1px solid #333;
+            cursor: pointer;
+            background: #fff;
+            color: #111; /* ensure text is visible */
+            font-weight: 600;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination button.active { background: #000; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Dashboard Sản Phẩm</h2>
+    <div class="toolbar">
+        <input type="text" id="inpSearch" placeholder="Tìm theo tên sản phẩm..." oninput="onSearch()">
+        <button onclick="onSort('title')">Sắp xếp Tên</button>
+        <button onclick="onSort('price')">Sắp xếp Giá</button>
+        <select id="selSize" onchange="onChangeSize()">
+            <option value="5">5 dòng</option>
+            <option value="10" selected>10 dòng</option>
+            <option value="20">20 dòng</option>
+        </select>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th style="width: 250px;">Toàn bộ hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá ($)</th>
+                <th>Mô tả</th>
+            </tr>
+        </thead>
+        <tbody id="contentBody"></tbody>
+    </table>
+    <div id="pagBox" class="pagination"></div>
+</div>
+<script src="dashboard.js"></script>
+</body>
+</html>
